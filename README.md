@@ -11,7 +11,7 @@ C Programming Practice
 Hello World
 
 ### Description
-Hello, world
+Prints "Hello, world!" to the screen (duh)
 
 ### Standard functions used:
 * printf()
