@@ -4,6 +4,7 @@ Compiled using `gcc -std=c11 -pedantic-errors file_name.c [other_file.c, …]`
 
 ## Projects
 * [Hello World](#hello-world)
+* [User Input Utilities](#user-input-utilities)
 * [Verify User Input](#verify-user-input)
 * [Age Comparer](#age-comparer)
 
