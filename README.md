@@ -2,8 +2,8 @@
 C Programming Practice
 
 ## Projects
-* [Hello World](#Hello-World)
-* [Age Comparer](#Age-Comparer)
+* [Hello World](#hello-world)
+* [Age Comparer](#age-comparer)
 
 ## Hello World
 
