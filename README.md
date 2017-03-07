@@ -7,9 +7,6 @@ C Programming Practice
 
 ## Hello World
 
-### Project Folder
-Hello World
-
 ### Description
 Prints "Hello, world!" to the screen (duh)
 
@@ -17,9 +14,6 @@ Prints "Hello, world!" to the screen (duh)
 * printf()
 
 ## Age Comparer
-
-### Project Folder
-Age Comparer
 
 ### Description
 Compares user's age with programmer's age.
