@@ -3,8 +3,8 @@ C Programming Practice
 
 ## Age Comparer
 
-### File name
-AgeComparer.c
+### Project Folder
+Age Comparer
 
 ### Description
 Compares user's age with programmer's age.
