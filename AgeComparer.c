@@ -8,9 +8,9 @@ int main(void) {
   char your_age_str[3];
   int your_age = 0;
 
-  printf("I am %d years old until Thursday.\n", my_age);
+  printf("I am %d years old until Thursday March 9th, 2017.\n", my_age);
   printf("How old are you? (Please just enter the closest year value.) ");
-  
+
   while ( (c = getchar()) != '\n' && c != EOF) {
     your_age_str[i++] += c;
   }
