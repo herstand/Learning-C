@@ -12,7 +12,7 @@ int main(void) {
 
   printf("Enter a positive integer: ");
 
-  loadCharArrayFromUser(userInput, error_ptr);
+  loadIntRepresentedAsCharArrayFromUser(userInput, error_ptr);
   if (*error_ptr == 1) {
     return 1;
   }
