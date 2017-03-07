@@ -15,6 +15,27 @@ Prints "Hello, world!" to the screen (duh)
 ### Standard functions used:
 * printf()
 
+### Concepts Demonstrated
+* function declaration
+* compiling
+* #include
+
+## User Input Utilities
+
+### Description
+Utility functions used in other projects.
+
+### Standard functions used:
+* strlen()
+* printf()
+* getchar()
+
+### Concepts Demonstrated
+* header files
+* error handling in c (via parameter passing)
+* pass by reference (via pointer passing)
+* strings (explicitly setting '\0' to mark end of char array)
+
 ## Verify User Input
 
 ### Description
@@ -22,16 +43,17 @@ Prompts the user for a positive integer, validates input and responds appropriat
 
 ### Standard functions used:
 * printf()
-* strtol()
-* strlen()
-* getchar()
 
-### Concepts Utilized
+### My util functions used:
+* loadIntRepresentedAsCharArrayFromUser()
+* strtol_strict()
+
+### Concepts Demonstrated
+* pointers
 * header files
 * compiling multiple c files at once
 * error handling in c (via parameter passing)
 * pass by reference (via pointer passing)
-* strings (explicitly setting '\0' to mark end of char array)
 * dereferencing (using & symbol)
 
 ## Age Comparer
@@ -40,10 +62,16 @@ Prompts the user for a positive integer, validates input and responds appropriat
 Compares user's age with programmer's age.
 
 ### Standard functions used:
-* getchar()
-* strtol()
 * printf()
 
-### TODO
-* Error handling
-* Split into multiple functions
+### My util functions used:
+* loadIntRepresentedAsCharArrayFromUser()
+* strtol_strict()
+
+### Concepts Demonstrated
+* pointers
+* header files
+* compiling multiple c files at once
+* error handling in c (via parameter passing)
+* pass by reference (via pointer passing)
+* dereferencing (using & symbol)
