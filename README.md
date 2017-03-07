@@ -1,6 +1,6 @@
 # C Practice
 C Programming Practice
-Compiled using `gcc -std=c90 -pedantic-errors file_name.c` to ensure C compliance.
+Compiled using `gcc -std=c11 -pedantic-errors file_name.c [other_file.c, …]`
 
 ## Projects
 * [Hello World](#hello-world)
