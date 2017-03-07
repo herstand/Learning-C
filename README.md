@@ -1,6 +1,10 @@
 # C Practice
 C Programming Practice
 
+## Projects
+* [Hello World](#Hello-World)
+* [Age Comparer](#Age-Comparer)
+
 ## Hello World
 
 ### Project Folder
