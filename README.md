@@ -1,13 +1,15 @@
 # C-Practice
 C Programming Practice
 
-# Age Comparer
-## Description
+## Age Comparer
+### File name
+AgeComparer.c
+### Description
 Compares user's age with programmer's age.
-## Standard functions used:
+### Standard functions used:
 * getchar()
 * strtol()
 * printf()
-## TODO
+### TODO
 * Error handling
 * Split into multiple functions
