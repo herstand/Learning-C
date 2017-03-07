@@ -1,6 +1,17 @@
 # C Practice
 C Programming Practice
 
+## Hello World
+
+### Project Folder
+Hello World
+
+### Description
+Hello, world
+
+### Standard functions used:
+* printf()
+
 ## Age Comparer
 
 ### Project Folder
