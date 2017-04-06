@@ -13,6 +13,7 @@ struct Hand {
 };
 struct Player {
   struct Hand hand;
+  char name[140];
 };
 struct Game {
   struct Player players[2];

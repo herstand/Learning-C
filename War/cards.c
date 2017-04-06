@@ -1,20 +1,28 @@
 #include <stdlib.h>
-#include <string.h>
 #include <math.h>
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 #include "cards.h"
 
 char* convertIntCardToString(int card) {
-  char* output = malloc(18 * sizeof(char));
+  char* output = calloc(18, sizeof(char));
   strcat(output,FACES[card % 13]);
   strcat(output," of ");
   strcat(output,SUITS[(int)(card / 13.0)]);
   return output;
 }
 
+void printPlayerCards(struct Player player) {
+  printf("%s Cards: ", player.name);
+  for (int i = 0; i < player.hand.size; i++) {
+    printf("%d, ",player.hand.cards[i]);
+  }
+  printf("\n");
+}
+
 /**
-  Card1 is smaller if returns negative,
+  card1 is smaller if returns negative,
   bigger if returns positive
   equal if 0,
 */
@@ -32,11 +40,14 @@ void playHand(struct Game* game) {
     int machineCard = (*game).players[1].hand.cards[0];
     char * machineCardToString = convertIntCardToString(machineCard);
     int winner = compareHands(humanCard,machineCard);
-    printf("You flipped the %s.\n", humanCardToString);
+
+    printf("You flipped the %s(%d).\n", humanCardToString, humanCard);
     free(humanCardToString);
-    printf("Machine flipped the %s.\n", machineCardToString);
+    printf("Machine flipped the %s(%d).\n", machineCardToString, machineCard);
     free(machineCardToString);
+
     if (winner > 0) {
+      printf("**You won the hand!**\n");
       addCardToHand(
         &(*game).players[0],
         removeTopCardFromHand(&(*game).players[0])
@@ -45,10 +56,11 @@ void playHand(struct Game* game) {
         &(*game).players[0],
         removeTopCardFromHand(&(*game).players[1])
       );
-      printf("**You won the hand!\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
+      printf("\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
       while (enter != '\r' && enter != '\n') { enter = getchar(); }
       playHand(game);
     } else if (winner < 0) {
+      printf("**You lost the hand!**\n");
       addCardToHand(
         &(*game).players[1],
         removeTopCardFromHand(&(*game).players[1])
@@ -57,7 +69,7 @@ void playHand(struct Game* game) {
         &(*game).players[1],
         removeTopCardFromHand(&(*game).players[0])
       );
-      printf("**You lost the hand!\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
+      printf("\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
       while (enter != '\r' && enter != '\n') { enter = getchar(); }
       playHand(game);
     } else {
@@ -97,17 +109,27 @@ void addCardToHand(struct Player *player, int card) {
                            (*player).hand.cards,
                            ((*player).hand.size + 1) * sizeof(int)
                           );
-  (*player).hand.cards[(*player).hand.size] = card;
   (*player).hand.size += 1;
+  (*player).hand.cards[(*player).hand.size - 1] = card;
 }
 
 int removeTopCardFromHand(struct Player *player) {
-  int topCard = (*player).hand.cards[(*player).hand.size - 1];
-  (*player).hand.cards =  realloc(
-                           (*player).hand.cards,
-                           ((*player).hand.size - 1) * sizeof(int)
-                          );
+  int topCard = (*player).hand.cards[0];
+  int lastCard = (*player).hand.cards[(*player).hand.size-1];
+  int * tmp =  realloc(
+                  (*player).hand.cards,
+                  ((*player).hand.size - 1) * sizeof(int)
+                );
+  if (tmp != NULL) {
+    (*player).hand.cards = tmp;
+  } else {
+    printf("ERROR");
+  }
   (*player).hand.size -= 1;
+  for (int card_index = 0; card_index < (*player).hand.size - 1; card_index++){
+    (*player).hand.cards[card_index] = (*player).hand.cards[card_index + 1];
+  }
+  (*player).hand.cards[(*player).hand.size - 1] = lastCard;
   return topCard;
 }
 
@@ -152,6 +174,8 @@ void beginGame(struct Game* game) {
 }
 struct Game* initializeGame() {
   struct Game* game = malloc(sizeof(struct Game));
+  strcpy((*game).players[0].name, "User");
+  strcpy((*game).players[1].name, "Computer");
   initializeDeck(&((*game).deck));
   dealCards(game);
   return game;
