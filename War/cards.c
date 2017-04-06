@@ -135,35 +135,32 @@ int removeTopCardFromHand(struct Player *player) {
 
 void dealCards(struct Game *game) {
   int deckLength = sizeof((*game).deck.cards) / sizeof(int);
-  // Deal player 1
-  (*game).players[0].hand.size = 1;
-  (*game).players[0].hand.cards = malloc(
-                                    (*game).players[0].hand.size
-                                    *
-                                    sizeof(int)
-                                  );
-  (*game).players[0].hand.cards[0] = (*game).deck.cards[0];
+  // Because deck is shuffled, we deal 1 / numOfPlayer cards to each player at a time
   for (
-    int cardInDeck = 1;
-    cardInDeck < deckLength / 2;
-    cardInDeck++
+    int player_index = 0;
+    player_index < (*game).numberOfPlayers;
+    player_index++
   ) {
-    addCardToHand(&(*game).players[0], (*game).deck.cards[cardInDeck]);
-  }
-  // Deal player 2
-  (*game).players[1].hand.size = 1;
-  (*game).players[1].hand.cards = malloc(
-                                    (*game).players[1].hand.size
-                                    *
-                                    sizeof(int)
-                                  );
-  (*game).players[1].hand.cards[0] = (*game).deck.cards[deckLength / 2];
-  for (
-    int cardInDeck = deckLength / 2 + 1;
-    cardInDeck < deckLength;
-    cardInDeck++
-  ) {
-    addCardToHand(&(*game).players[1], (*game).deck.cards[cardInDeck]);
+    // Deal first card to player
+    (*game).players[player_index].hand.size = 1;
+    (*game).players[player_index].hand.cards = malloc(
+                                      (*game).players[player_index].hand.size
+                                      *
+                                      sizeof(int)
+                                    );
+    (*game).players[player_index].hand.cards[0] = (*game).deck.cards[(deckLength * player_index) / 2];
+
+    // Deal rest of cards to player
+    for (
+      int cardInDeck = (deckLength * player_index) / 2 + 1;
+      cardInDeck < deckLength / ((*game).numberOfPlayers - player_index);
+      cardInDeck++
+    ) {
+      addCardToHand(
+        &(*game).players[player_index],
+        (*game).deck.cards[cardInDeck]
+      );
+    }
   }
 }
 void beginGame(struct Game* game) {
@@ -174,6 +171,7 @@ void beginGame(struct Game* game) {
 }
 struct Game* initializeGame() {
   struct Game* game = malloc(sizeof(struct Game));
+  (*game).numberOfPlayers = 2;
   strcpy((*game).players[0].name, "User");
   strcpy((*game).players[1].name, "Computer");
   initializeDeck(&((*game).deck));

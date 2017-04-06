@@ -18,6 +18,7 @@ struct Player {
 struct Game {
   struct Player players[2];
   struct Deck deck;
+  int numberOfPlayers;
 };
 
 int compareHands(int card1, int card2);
