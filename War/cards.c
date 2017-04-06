@@ -29,6 +29,7 @@ void printPlayerCards(struct Player player) {
 int compareHands(int card1, int card2) {
   return card1 % 13 - card2 % 13;
 }
+//TODO: Assumes human and computer only right now
 void playHand(struct Game* game) {
   int enter = 0;
   if (
@@ -123,7 +124,7 @@ int removeTopCardFromHand(struct Player *player) {
   if (tmp != NULL) {
     (*player).hand.cards = tmp;
   } else {
-    printf("ERROR");
+    printf("ERROR"); // realloc can sometimes cause an error
   }
   (*player).hand.size -= 1;
   for (int card_index = 0; card_index < (*player).hand.size - 1; card_index++){

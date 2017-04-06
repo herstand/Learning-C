@@ -2,7 +2,7 @@
 #define CARDS_H
 
 static const char SUITS[4][9]= {"hearts","spades","clubs","diamonds"};
-static const char FACES[13][6]= {"ace","two","three","four","five","six","seven","eight","nine", "ten","jack","queen","king"};
+static const char FACES[13][6]= {"two","three","four","five","six","seven","eight","nine", "ten","jack","queen","king","ace"};
 char * convertIntCardToString(int card);
 struct Deck {
   int cards[52];
