@@ -25,6 +25,8 @@ int compareHands(int card1, int card2);
 void playHand(struct Game* game);
 void playWarHand(struct Game* game);
 void initializeDeck(struct Deck* deck);
+void captureTopCardFrom(struct Player* winner, struct Player* loser);
+void sendTopCardToBottom(struct Player* player);
 void addCardToHand(struct Player* player, int card);
 int removeTopCardFromHand(struct Player* player);
 void dealCards(struct Game *game);

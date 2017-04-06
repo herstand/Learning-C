@@ -43,33 +43,21 @@ void playHand(struct Game* game) {
     int winner = compareHands(humanCard,machineCard);
 
     printf("You flipped the %s(%d).\n", humanCardToString, humanCard);
-    free(humanCardToString);
     printf("Machine flipped the %s(%d).\n", machineCardToString, machineCard);
+    free(humanCardToString);
     free(machineCardToString);
 
     if (winner > 0) {
       printf("**You won the hand!**\n");
-      addCardToHand(
-        &(*game).players[0],
-        removeTopCardFromHand(&(*game).players[0])
-      );
-      addCardToHand(
-        &(*game).players[0],
-        removeTopCardFromHand(&(*game).players[1])
-      );
+      sendTopCardToBottom(&(*game).players[0]);
+      captureTopCardFrom(&(*game).players[0], &(*game).players[1]);
       printf("\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
       while (enter != '\r' && enter != '\n') { enter = getchar(); }
       playHand(game);
     } else if (winner < 0) {
       printf("**You lost the hand!**\n");
-      addCardToHand(
-        &(*game).players[1],
-        removeTopCardFromHand(&(*game).players[1])
-      );
-      addCardToHand(
-        &(*game).players[1],
-        removeTopCardFromHand(&(*game).players[0])
-      );
+      sendTopCardToBottom(&(*game).players[1]);
+      captureTopCardFrom(&(*game).players[1], &(*game).players[0]);
       printf("\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
       while (enter != '\r' && enter != '\n') { enter = getchar(); }
       playHand(game);
@@ -79,9 +67,9 @@ void playHand(struct Game* game) {
       playWarHand(game);
     }
   } else if ((*game).players[0].hand.size > 0) {
-    printf("You won!\n\n");
+    printf("You won the game!\n\n");
   } else {
-    printf("Machine won!\n\n");
+    printf("Machine won the game!\n\n");
   }
 }
 
@@ -105,6 +93,18 @@ void initializeDeck(struct Deck *deck) {
   }
 }
 
+void captureTopCardFrom(struct Player *winner, struct Player *loser) {
+  addCardToHand(
+    winner,
+    removeTopCardFromHand(loser)
+  );
+}
+void sendTopCardToBottom(struct Player *player) {
+  addCardToHand(
+    player,
+    removeTopCardFromHand(player)
+  );
+}
 void addCardToHand(struct Player *player, int card) {
   (*player).hand.cards =  realloc(
                            (*player).hand.cards,
