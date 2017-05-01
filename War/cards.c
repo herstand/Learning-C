@@ -44,7 +44,6 @@ void playHand(struct Game* game) {
 
     printf("You flipped the %s(%d).\n", humanCardToString, humanCard);
     printf("Machine flipped the %s(%d).\n", machineCardToString, machineCard);
-    free(humanCardToString);
     free(machineCardToString);
 
     if (winner > 0) {
@@ -62,10 +61,11 @@ void playHand(struct Game* game) {
       while (enter != '\r' && enter != '\n') { enter = getchar(); }
       playHand(game);
     } else {
-      printf("**You tied! It's war time! Press enter to continue.\n");
+      printf("**You both flipped %s! It's war time! Press enter to continue.\n", humanCardToString);
       while (enter != '\r' && enter != '\n') { enter = getchar(); }
       playWarHand(game);
     }
+    free(humanCardToString);
   } else if ((*game).players[0].hand.size > 0) {
     printf("You won the game!\n\n");
   } else {
@@ -74,7 +74,49 @@ void playHand(struct Game* game) {
 }
 
 void playWarHand(struct Game* game) {
-  // TODO
+  int enter = 0;
+  int flippedHumanCard = removeTopCardFromHand(&(*game).players[0]);
+  int flippedMachineCard = removeTopCardFromHand(&(*game).players[1]);
+  int downHumanCard = removeTopCardFromHand(&(*game).players[0]);
+  int downMachineCard = removeTopCardFromHand(&(*game).players[1]);
+  int humanWarriorCard = removeTopCardFromHand(&(*game).players[0]);
+  char * humanWarriorCardToString = convertIntCardToString(humanWarriorCard);
+  int machineWarriorCard = removeTopCardFromHand(&(*game).players[1]);
+  char * machineWarriorCardToString = convertIntCardToString(machineWarriorCard);
+  int winner = compareHands(humanWarriorCard,machineWarriorCard);
+
+  printf("Your warrior card is the %s(%d).\n", humanWarriorCardToString, humanWarriorCard);
+  printf("The machine's warrior card is the %s(%d).\n", machineWarriorCardToString, machineWarriorCard);
+  free(humanWarriorCardToString);
+  free(machineWarriorCardToString);
+
+  if (winner > 0) {
+    printf("**You won the hand!**\n");
+    addCardToHand(&(*game).players[0], flippedHumanCard);
+    addCardToHand(&(*game).players[0], flippedMachineCard);
+    addCardToHand(&(*game).players[0], downHumanCard);
+    addCardToHand(&(*game).players[0], downMachineCard);
+    addCardToHand(&(*game).players[0], humanWarriorCard);
+    addCardToHand(&(*game).players[0], machineWarriorCard);
+    printf("\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
+    while (enter != '\r' && enter != '\n') { enter = getchar(); }
+    playHand(game);
+  } else if (winner < 0) {
+    printf("**You lost the hand!**\n");
+    addCardToHand(&(*game).players[1], flippedHumanCard);
+    addCardToHand(&(*game).players[1], flippedMachineCard);
+    addCardToHand(&(*game).players[1], downHumanCard);
+    addCardToHand(&(*game).players[1], downMachineCard);
+    addCardToHand(&(*game).players[1], humanWarriorCard);
+    addCardToHand(&(*game).players[1], machineWarriorCard);
+    printf("\nScore: You(%d), Machine(%d)\nPress enter to continue.\n",(*game).players[0].hand.size,(*game).players[1].hand.size);
+    while (enter != '\r' && enter != '\n') { enter = getchar(); }
+    playHand(game);
+  } else {
+    printf("**You both flipped %s! The war goes on! Press enter to continue.\n", humanWarriorCardToString);
+    while (enter != '\r' && enter != '\n') { enter = getchar(); }
+    //TODO: recursive WAR playWarHand(game);
+  }
 }
 
 void initializeDeck(struct Deck *deck) {
@@ -134,6 +176,13 @@ int removeTopCardFromHand(struct Player *player) {
   return topCard;
 }
 
+void initializeHand(struct Hand* hand, int card) {
+  (*hand).size = 1;
+  (*hand).cards = malloc(1 * sizeof(int));
+  (*hand).cards[0] = card;
+}
+
+
 void dealCards(struct Game *game) {
   int deckLength = sizeof((*game).deck.cards) / sizeof(int);
   // Because deck is shuffled, we deal 1 / numOfPlayer cards to each player at a time
@@ -143,13 +192,10 @@ void dealCards(struct Game *game) {
     player_index++
   ) {
     // Deal first card to player
-    (*game).players[player_index].hand.size = 1;
-    (*game).players[player_index].hand.cards = malloc(
-                                      (*game).players[player_index].hand.size
-                                      *
-                                      sizeof(int)
-                                    );
-    (*game).players[player_index].hand.cards[0] = (*game).deck.cards[(deckLength * player_index) / 2];
+    initializeHand(
+      &((*game).players[player_index].hand),
+      (*game).deck.cards[(deckLength * player_index) / 2]
+    );
 
     // Deal rest of cards to player
     for (

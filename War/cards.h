@@ -18,6 +18,7 @@ struct Player {
 struct Game {
   struct Player players[2];
   struct Deck deck;
+  struct Hand warHand;
   int numberOfPlayers;
 };
 
@@ -29,6 +30,7 @@ void captureTopCardFrom(struct Player* winner, struct Player* loser);
 void sendTopCardToBottom(struct Player* player);
 void addCardToHand(struct Player* player, int card);
 int removeTopCardFromHand(struct Player* player);
+void intializeHand(struct Hand* hand, int card);
 void dealCards(struct Game *game);
 struct Game* initializeGame();
 void beginGame(struct Game* game);
