@@ -1,8 +1,8 @@
 #ifndef CARDS_H
 #define CARDS_H
 
-static const char SUITS[4][9]= {"hearts","spades","clubs","diamonds"};
-static const char FACES[13][6]= {"two","three","four","five","six","seven","eight","nine", "ten","jack","queen","king","ace"};
+static const char SUITS[4][9]= {"♥","♠","♣","♦"};
+static const char FACES[13][6]= {"2","3","4","5","6","7","8","9","10","J","Q","K","A"};
 char * convertIntCardToString(int card);
 struct Deck {
   int cards[52];
@@ -30,7 +30,7 @@ void captureTopCardFrom(struct Player* winner, struct Player* loser);
 void sendTopCardToBottom(struct Player* player);
 void addCardToHand(struct Player* player, int card);
 int removeTopCardFromHand(struct Player* player);
-void intializeHand(struct Hand* hand, int card);
+void initializeHand(struct Hand* hand, int card);
 void dealCards(struct Game *game);
 struct Game* initializeGame();
 void beginGame(struct Game* game);

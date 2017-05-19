@@ -8,7 +8,6 @@
 char* convertIntCardToString(int card) {
   char* output = calloc(18, sizeof(char));
   strcat(output,FACES[card % 13]);
-  strcat(output," of ");
   strcat(output,SUITS[(int)(card / 13.0)]);
   return output;
 }
@@ -42,8 +41,8 @@ void playHand(struct Game* game) {
     char * machineCardToString = convertIntCardToString(machineCard);
     int winner = compareHands(humanCard,machineCard);
 
-    printf("You flipped the %s(%d).\n", humanCardToString, humanCard);
-    printf("Machine flipped the %s(%d).\n", machineCardToString, machineCard);
+    printf("You flipped the [%s].\n", humanCardToString);
+    printf("Machine flipped the [%s].\n", machineCardToString);
     free(machineCardToString);
 
     if (winner > 0) {
@@ -85,8 +84,8 @@ void playWarHand(struct Game* game) {
   char * machineWarriorCardToString = convertIntCardToString(machineWarriorCard);
   int winner = compareHands(humanWarriorCard,machineWarriorCard);
 
-  printf("Your warrior card is the %s(%d).\n", humanWarriorCardToString, humanWarriorCard);
-  printf("The machine's warrior card is the %s(%d).\n", machineWarriorCardToString, machineWarriorCard);
+  printf("Your warrior card is the [%s].\n", humanWarriorCardToString);
+  printf("The machine's warrior card is the [%s].\n", machineWarriorCardToString);
   free(humanWarriorCardToString);
   free(machineWarriorCardToString);
 
@@ -121,13 +120,14 @@ void playWarHand(struct Game* game) {
 
 void initializeDeck(struct Deck *deck) {
   int cardIndex;
+  int numCardsInDeck = sizeof((*deck).cards)/sizeof((*deck).cards[0]);
   int deckLength = sizeof((*deck).cards)/sizeof(int);
   srand(time(NULL));
   for (cardIndex = 0; cardIndex < deckLength; cardIndex++) {
     (*deck).cards[cardIndex-1] = cardIndex;
   }
   // shuffle
-  for (cardIndex = 51; cardIndex > 0; cardIndex--) {
+  for (cardIndex = numCardsInDeck - 1; cardIndex > 0; cardIndex--) {
     int destinationOfSwap = rand() % cardIndex;
     int originOfSwap = (*deck).cards[cardIndex];
     (*deck).cards[cardIndex] = (*deck).cards[destinationOfSwap];
